@@ -75,7 +75,7 @@ export const FEATURES = [
     icon:  "✦",
     color: "#7C3AED",
     title: "CV & Lettre de motivation sur-mesure",
-    desc:  "Colle une offre. L'IA adapte ton CV et rédige une lettre de motivation personnalisée en quelques secondes.",
+    desc: `Une offre te convient ? L'IA adapte ton CV et rédige une lettre de motivation personnalisée en quelques secondes. Tu as trouvé ailleurs ? Colle l'offre et ton agent fera le même job !`,
   },
   {
     icon:  "◈",
