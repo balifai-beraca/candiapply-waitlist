@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// pages/LandingPage.jsx — Landing page waitlist CandiApply
+// pages/LandingPage.jsx — Landing page waitlist CandiApply (RESPONSIVE FIX)
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useState, useEffect, useRef } from "react";
@@ -7,6 +7,19 @@ import { B, WAITLIST_CONFIG, MARQUEE_ITEMS, PROBLEMS, FEATURES, STEPS } from "..
 import { getWaitlistCount } from "../lib/supabase";
 import { Logo, LiveCounter, Avatars, Pill, SLabel, FeatureCard, Step } from "../components/UI";
 import { WaitlistForm } from "../components/WaitlistForm";
+
+// ── HOOK RESPONSIVE ───────────────────────────────────────────────────────────
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < breakpoint : false
+  );
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, [breakpoint]);
+  return isMobile;
+}
 
 // ── GLOBAL STYLES ─────────────────────────────────────────────────────────────
 const GLOBAL_CSS = `
@@ -25,10 +38,12 @@ const GLOBAL_CSS = `
 
 // ── NAVBAR ────────────────────────────────────────────────────────────────────
 function Navbar({ count, onSignup, onDemo, scrolled }) {
+  const isMobile = useIsMobile();
+
   return (
     <nav style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-      height: 60, padding: "0 32px",
+      height: 60, padding: isMobile ? "0 16px" : "0 32px",
       display: "flex", alignItems: "center", justifyContent: "space-between",
       background: scrolled ? "rgba(246,248,250,0.96)" : B.background,
       borderBottom: `1px solid ${scrolled ? B.border : "transparent"}`,
@@ -36,19 +51,42 @@ function Navbar({ count, onSignup, onDemo, scrolled }) {
       transition: "all 0.25s",
     }}>
       <Logo size={32} />
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+
+      <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 8 : 12 }}>
         {/* Compteur live */}
-        <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "5px 12px", borderRadius: 100, background: B.accent, border: `1px solid ${B.primary}25` }}>
-          <span style={{ width: 6, height: 6, borderRadius: "50%", background: B.green, display: "inline-block", animation: "blink 2s infinite" }} />
-          <span style={{ fontSize: 11, color: B.primary, fontWeight: 600, fontFamily: "'Inter', sans-serif" }}>
+        <div style={{
+          display: "flex", alignItems: "center", gap: 6,
+          padding: isMobile ? "5px 8px" : "5px 12px",
+          borderRadius: 100, background: B.accent,
+          border: `1px solid ${B.primary}25`,
+        }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: B.green, display: "inline-block", animation: "blink 2s infinite", flexShrink: 0 }} />
+          <span style={{ fontSize: 11, color: B.primary, fontWeight: 600, fontFamily: "'Inter', sans-serif", whiteSpace: "nowrap" }}>
             <LiveCounter value={count} /> inscrits
           </span>
         </div>
-        <button onClick={onDemo} style={{ padding: "8px 16px", borderRadius: B.radius, border: `1px solid ${B.border}`, background: B.card, color: B.muted, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'Inter', sans-serif" }}>
-          Voir une démo
-        </button>
-        <button onClick={onSignup} style={{ padding: "8px 20px", borderRadius: B.radius, border: "none", background: B.primary, color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "'Space Grotesk', sans-serif", boxShadow: B.shadowCard }}>
-          S'inscrire
+
+        {/* Bouton démo — masqué sur mobile */}
+        {!isMobile && (
+          <button onClick={onDemo} style={{
+            padding: "8px 16px", borderRadius: B.radius,
+            border: `1px solid ${B.border}`, background: B.card,
+            color: B.muted, fontSize: 13, fontWeight: 600,
+            cursor: "pointer", fontFamily: "'Inter', sans-serif",
+          }}>
+            Voir une démo
+          </button>
+        )}
+
+        <button onClick={onSignup} style={{
+          padding: isMobile ? "8px 14px" : "8px 20px",
+          borderRadius: B.radius, border: "none",
+          background: B.primary, color: "#fff",
+          fontSize: isMobile ? 12 : 13, fontWeight: 700,
+          cursor: "pointer", fontFamily: "'Space Grotesk', sans-serif",
+          boxShadow: B.shadowCard, whiteSpace: "nowrap",
+        }}>
+          {isMobile ? "S'inscrire" : "S'inscrire"}
         </button>
       </div>
     </nav>
@@ -57,25 +95,49 @@ function Navbar({ count, onSignup, onDemo, scrolled }) {
 
 // ── HERO ──────────────────────────────────────────────────────────────────────
 function Hero({ count, onSignup, onDemo }) {
+  const isMobile = useIsMobile();
+
   return (
-    <section style={{ paddingTop: 108, paddingBottom: 72, paddingLeft: 24, paddingRight: 24, textAlign: "center", background: B.background, position: "relative", overflow: "hidden" }}>
-      {/* Halo de fond */}
-      <div style={{ position: "absolute", top: 60, left: "50%", transform: "translateX(-50%)", width: 700, height: 400, borderRadius: "50%", background: B.accent, opacity: 0.5, filter: "blur(60px)", pointerEvents: "none" }} />
+    <section style={{
+      paddingTop: isMobile ? 88 : 108,
+      paddingBottom: isMobile ? 48 : 72,
+      paddingLeft: 24, paddingRight: 24,
+      textAlign: "center", background: B.background,
+      position: "relative", overflow: "hidden",
+    }}>
+      {/* Halo */}
+      <div style={{
+        position: "absolute", top: 60, left: "50%",
+        transform: "translateX(-50%)",
+        width: isMobile ? 320 : 700, height: isMobile ? 200 : 400,
+        borderRadius: "50%", background: B.accent,
+        opacity: 0.5, filter: "blur(60px)", pointerEvents: "none",
+      }} />
 
       <div style={{ position: "relative", maxWidth: 740, margin: "0 auto" }}>
-        {/* Badge "Bientôt dispo" */}
+        {/* Badge */}
         <div style={{ marginBottom: 22, animation: "fadeUp 0.4s ease 0.05s both" }}>
           <Pill dot>Bientôt disponible — Inscriptions ouvertes</Pill>
         </div>
 
         {/* H1 */}
-        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(26px,4.5vw,52px)", fontWeight: 700, lineHeight: 1.15, letterSpacing: "-0.03em", color: B.foreground, margin: "0 0 20px", animation: "fadeUp 0.4s ease 0.1s both" }}>
+        <h1 style={{
+          fontFamily: "'Space Grotesk', sans-serif",
+          fontSize: "clamp(24px,4.5vw,52px)",
+          fontWeight: 700, lineHeight: 1.2,
+          letterSpacing: "-0.03em", color: B.foreground,
+          margin: "0 0 20px", animation: "fadeUp 0.4s ease 0.1s both",
+        }}>
           Trouvez votre prochain emploi<br />
           <span style={{ color: B.primary }}>sans passer des heures à chercher</span>
         </h1>
 
         {/* Sous-titre */}
-        <p style={{ fontSize: "clamp(15px,2vw,17px)", color: B.muted, lineHeight: "1.7", maxWidth: 500, margin: "0 auto 28px", animation: "fadeUp 0.4s ease 0.15s both" }}>
+        <p style={{
+          fontSize: "clamp(14px,2vw,17px)", color: B.muted,
+          lineHeight: "1.7", maxWidth: 500, margin: "0 auto 28px",
+          animation: "fadeUp 0.4s ease 0.15s both",
+        }}>
           CandiApply analyse votre profil, détecte les offres qui vous correspondent, personnalise vos candidatures et vous prépare aux entretiens —{" "}
           <strong style={{ color: B.foreground }}>tout en un, chaque matin.</strong>
         </p>
@@ -86,21 +148,42 @@ function Hero({ count, onSignup, onDemo }) {
         </div>
 
         {/* CTAs */}
-        <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginBottom: 12, animation: "fadeUp 0.4s ease 0.25s both" }}>
-          <button onClick={onSignup} style={{ padding: "12px 28px", borderRadius: B.radius, border: "none", background: B.primary, color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Space Grotesk', sans-serif", boxShadow: B.shadowElev }}>
+        <div style={{
+          display: "flex", gap: 12, justifyContent: "center",
+          flexDirection: isMobile ? "column" : "row",
+          alignItems: "center",
+          marginBottom: 12, animation: "fadeUp 0.4s ease 0.25s both",
+          padding: isMobile ? "0 16px" : 0,
+        }}>
+          <button onClick={onSignup} style={{
+            padding: "13px 28px", borderRadius: B.radius,
+            border: "none", background: B.primary, color: "#fff",
+            fontSize: 15, fontWeight: 700, cursor: "pointer",
+            fontFamily: "'Space Grotesk', sans-serif",
+            boxShadow: B.shadowElev,
+            width: isMobile ? "100%" : "auto",
+          }}>
             Rejoindre la liste d'attente →
           </button>
-          <button onClick={onDemo} style={{ padding: "12px 22px", borderRadius: B.radius, border: `1.5px solid ${B.border}`, background: B.card, color: B.muted, fontSize: 15, fontWeight: 600, cursor: "pointer", fontFamily: "'Inter', sans-serif", display: "flex", alignItems: "center", gap: 6 }}>
+          <button onClick={onDemo} style={{
+            padding: "13px 22px", borderRadius: B.radius,
+            border: `1.5px solid ${B.border}`, background: B.card,
+            color: B.muted, fontSize: 15, fontWeight: 600,
+            cursor: "pointer", fontFamily: "'Inter', sans-serif",
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+            width: isMobile ? "100%" : "auto",
+          }}>
             Voir une démo <span style={{ fontSize: 11 }}>▶</span>
           </button>
         </div>
+
         <p style={{ fontSize: 12, color: B.muted, animation: "fadeUp 0.4s ease 0.3s both", fontFamily: "'Inter', sans-serif" }}>
           Accès prioritaire · Gratuit · Sans engagement · RGPD 🇫🇷
         </p>
       </div>
 
-      {/* App preview */}
-      <AppPreview />
+      {/* App preview — masquée sur mobile */}
+      {!isMobile && <AppPreview />}
     </section>
   );
 }
@@ -113,10 +196,10 @@ function AppPreview() {
     { company: "Pennylane", role: "PO Finance",    score: "76%", color: B.green,   badge: "✅" },
   ];
   const routine = [
-    { label: "Veille 72h",       done: true,  color: B.green },
-    { label: "2 candidatures",   done: true,  color: B.green },
-    { label: "Tracker update",   done: false, color: B.muted },
-    { label: "Mock entretien",   done: false, color: B.muted },
+    { label: "Veille 72h",     done: true,  color: B.green },
+    { label: "2 candidatures", done: true,  color: B.green },
+    { label: "Tracker update", done: false, color: B.muted },
+    { label: "Mock entretien", done: false, color: B.muted },
   ];
   const sidebar = [
     { icon: "🏠", label: "Dashboard", color: B.primary, active: true  },
@@ -132,18 +215,17 @@ function AppPreview() {
         {/* Chrome */}
         <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 14 }}>
           <div style={{ display: "flex", gap: 6 }}>
-            {[B.destructive, B.orange, B.green].map((c) => (
+            {["#EF4444", B.orange, B.green].map((c) => (
               <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />
             ))}
           </div>
           <div style={{ flex: 1, background: B.background, borderRadius: 6, padding: "4px 12px", border: `1px solid ${B.border}` }}>
-            <span style={{ fontSize: 11, color: B.muted, fontFamily: "'Inter', sans-serif" }}>app.candipply.fr/dashboard</span>
+            <span style={{ fontSize: 11, color: B.muted, fontFamily: "'Inter', sans-serif" }}>app.candiapply.fr/dashboard</span>
           </div>
         </div>
 
         {/* Grid 3 colonnes */}
         <div style={{ display: "grid", gridTemplateColumns: "156px 1fr 184px", gap: 10, height: 226 }}>
-
           {/* Sidebar */}
           <div style={{ background: B.background, borderRadius: 10, padding: 10, display: "flex", flexDirection: "column", gap: 3, border: `1px solid ${B.border}` }}>
             <div style={{ marginBottom: 8, padding: "4px 6px" }}><Logo size={22} /></div>
@@ -228,13 +310,13 @@ function ProblemSection() {
     <section style={{ padding: "72px 24px", background: B.card, borderBottom: `1px solid ${B.border}` }}>
       <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
         <SLabel>Le problème</SLabel>
-        <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(24px,4vw,38px)", fontWeight: 700, color: B.foreground, letterSpacing: "-0.025em", lineHeight: 1.15, marginBottom: 16 }}>
+        <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(22px,4vw,38px)", fontWeight: 700, color: B.foreground, letterSpacing: "-0.025em", lineHeight: 1.2, marginBottom: 16 }}>
           La recherche d'emploi est<br />un travail à plein temps
         </h2>
         <p style={{ fontSize: 15, color: B.muted, lineHeight: "1.7", maxWidth: 520, margin: "0 auto 40px" }}>
           Surveiller des dizaines de sites, adapter son CV pour chaque offre, relancer sans oublier personne… tout ça en parallèle d'une vie normale.
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 14 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: 14 }}>
           {PROBLEMS.map(({ icon, title, desc }) => (
             <div key={title} style={{ background: B.background, border: `1px solid ${B.border}`, borderRadius: B.radius, padding: "20px", textAlign: "left", boxShadow: B.shadowCard }}>
               <div style={{ fontSize: 26, marginBottom: 10 }}>{icon}</div>
@@ -255,12 +337,12 @@ function FeaturesSection() {
       <div style={{ maxWidth: 980, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 44 }}>
           <SLabel>6 modules · 1 pipeline</SLabel>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(24px,4vw,38px)", fontWeight: 700, color: B.foreground, letterSpacing: "-0.025em", lineHeight: 1.15 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(22px,4vw,38px)", fontWeight: 700, color: B.foreground, letterSpacing: "-0.025em", lineHeight: 1.2 }}>
             Tout ce dont vous avez besoin.<br />
             <span style={{ color: B.muted }}>Rien de superflu.</span>
           </h2>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 14 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(260px,1fr))", gap: 14 }}>
           {FEATURES.map((feature, i) => (
             <FeatureCard key={feature.title} {...feature} delay={0.04 + i * 0.06} />
           ))}
@@ -277,7 +359,7 @@ function JourneeSection() {
       <div style={{ maxWidth: 640, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 44 }}>
           <SLabel>Ta journée avec CandiApply</SLabel>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(24px,4vw,38px)", fontWeight: 700, color: B.foreground, letterSpacing: "-0.025em", lineHeight: 1.15 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(22px,4vw,38px)", fontWeight: 700, color: B.foreground, letterSpacing: "-0.025em", lineHeight: 1.2 }}>
             1h par jour.<br />Pas plus.
           </h2>
         </div>
@@ -292,15 +374,18 @@ function JourneeSection() {
 // ── SECTION WAITLIST ──────────────────────────────────────────────────────────
 function WaitlistSection({ count, onSuccess, formRef }) {
   return (
-    <section ref={formRef} style={{ padding: "72px 24px 96px", background: B.accent, borderTop: `1px solid ${B.primary}20` }}>
+    <section
+      ref={formRef}
+      data-waitlist-section
+      style={{ padding: "72px 20px 96px", background: B.accent, borderTop: `1px solid ${B.primary}20` }}
+    >
       <div style={{ maxWidth: 460, margin: "0 auto" }}>
-
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: 28 }}>
           <div style={{ marginBottom: 14 }}>
             <Pill>🚀 Accès bêta prioritaire — Places limitées</Pill>
           </div>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(26px,4.5vw,38px)", fontWeight: 700, color: B.foreground, letterSpacing: "-0.025em", lineHeight: 1.15, marginBottom: 10 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(24px,4.5vw,38px)", fontWeight: 700, color: B.foreground, letterSpacing: "-0.025em", lineHeight: 1.2, marginBottom: 10 }}>
             Ton prochain entretien<br />
             <span style={{ color: B.primary }}>commence ici.</span>
           </h2>
@@ -311,41 +396,33 @@ function WaitlistSection({ count, onSuccess, formRef }) {
         </div>
 
         {/* Formulaire */}
-        <div style={{ background: B.card, border: `1px solid ${B.border}`, borderRadius: 16, padding: 28, boxShadow: B.shadowElev }}>
+        <div style={{ background: B.card, border: `1px solid ${B.border}`, borderRadius: 16, padding: "28px 20px", boxShadow: B.shadowElev }}>
           <WaitlistForm onSuccess={onSuccess} />
         </div>
 
         {/* Compteur live */}
-        <div style={{ marginTop: 14, background: B.card, border: `1px solid ${B.border}`, borderRadius: B.radius, padding: "12px 18px", display: "flex", justifyContent: "space-between", alignItems: "center", boxShadow: B.shadowCard }}>
+        <div style={{
+          marginTop: 14, background: B.card,
+          border: `1px solid ${B.border}`, borderRadius: B.radius,
+          padding: "12px 16px",
+          display: "flex", justifyContent: "space-between",
+          alignItems: "center", gap: 8, flexWrap: "wrap",
+          boxShadow: B.shadowCard,
+        }}>
           <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-            <span style={{ width: 7, height: 7, borderRadius: "50%", background: B.green, display: "inline-block", animation: "blink 1.8s infinite" }} />
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: B.green, display: "inline-block", animation: "blink 1.8s infinite", flexShrink: 0 }} />
             <span style={{ fontSize: 12, color: B.muted, fontFamily: "'Inter', sans-serif" }}>
               <strong style={{ color: B.foreground, fontWeight: 600 }}>
                 <LiveCounter value={count} />
               </strong>{" "}personnes inscrites
             </span>
           </div>
-          <span style={{ fontSize: 11, color: "#92400E", fontWeight: 600, background: "#FEF3C7", border: "1px solid #FDE68A", borderRadius: 6, padding: "2px 8px", fontFamily: "'Inter', sans-serif" }}>
+          <span style={{ fontSize: 11, color: "#92400E", fontWeight: 600, background: "#FEF3C7", border: "1px solid #FDE68A", borderRadius: 6, padding: "2px 8px", fontFamily: "'Inter', sans-serif", whiteSpace: "nowrap" }}>
             {Math.max(0, WAITLIST_CONFIG.maxProSlots - count)} places Pro restantes
           </span>
         </div>
       </div>
     </section>
-  );
-}
-
-// ── FOOTER ────────────────────────────────────────────────────────────────────
-function Footer() {
-  return (
-    <footer style={{ background: B.foreground, padding: "24px 32px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
-      <Logo size={28} inverted />
-      <div style={{ display: "flex", gap: 24 }}>
-        {["CGU", "Confidentialité", "Contact"].map((label) => (
-          <span key={label} style={{ fontSize: 12, color: "#94A3B8", cursor: "pointer", fontFamily: "'Inter', sans-serif" }}>{label}</span>
-        ))}
-      </div>
-      <span style={{ fontSize: 11, color: "#475569", fontFamily: "'Inter', sans-serif" }}>© 2026 CandiApply · Made in 🇫🇷</span>
-    </footer>
   );
 }
 
@@ -376,7 +453,7 @@ function FAQSection() {
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 44 }}>
           <SLabel>FAQ</SLabel>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(24px,4vw,38px)", fontWeight: 700, color: B.foreground, letterSpacing: "-0.025em", lineHeight: 1.15 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(22px,4vw,38px)", fontWeight: 700, color: B.foreground, letterSpacing: "-0.025em", lineHeight: 1.2 }}>
             Questions fréquentes
           </h2>
         </div>
@@ -387,13 +464,13 @@ function FAQSection() {
               <div key={i} style={{ background: B.card, border: `1px solid ${isOpen ? B.primary + "40" : B.border}`, borderRadius: B.radius, overflow: "hidden", transition: "border-color 0.2s" }}>
                 <button
                   onClick={() => setOpen(isOpen ? null : i)}
-                  style={{ width: "100%", padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, background: "transparent", border: "none", cursor: "pointer", textAlign: "left" }}
+                  style={{ width: "100%", padding: "18px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, background: "transparent", border: "none", cursor: "pointer", textAlign: "left" }}
                 >
                   <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, color: B.foreground, lineHeight: 1.4 }}>{faq.question}</span>
                   <span style={{ flexShrink: 0, width: 22, height: 22, borderRadius: "50%", background: isOpen ? B.primary : B.accent, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, color: isOpen ? "#fff" : B.muted, transition: "all 0.2s", transform: isOpen ? "rotate(45deg)" : "none" }}>+</span>
                 </button>
                 {isOpen && (
-                  <div style={{ padding: "0 22px 18px", fontSize: 14, color: B.muted, lineHeight: "1.7", fontFamily: "'Inter', sans-serif" }}>
+                  <div style={{ padding: "0 20px 18px", fontSize: 14, color: B.muted, lineHeight: "1.7", fontFamily: "'Inter', sans-serif" }}>
                     {faq.answer}
                   </div>
                 )}
@@ -406,13 +483,37 @@ function FAQSection() {
   );
 }
 
+// ── FOOTER ────────────────────────────────────────────────────────────────────
+function Footer() {
+  const isMobile = useIsMobile();
+  return (
+    <footer style={{
+      background: B.foreground,
+      padding: isMobile ? "24px 20px" : "24px 32px",
+      display: "flex",
+      flexDirection: isMobile ? "column" : "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      gap: 16,
+      textAlign: isMobile ? "center" : "left",
+    }}>
+      <Logo size={28} inverted />
+      <div style={{ display: "flex", gap: isMobile ? 20 : 24 }}>
+        {["CGU", "Confidentialité", "Contact"].map((label) => (
+          <span key={label} style={{ fontSize: 12, color: "#94A3B8", cursor: "pointer", fontFamily: "'Inter', sans-serif" }}>{label}</span>
+        ))}
+      </div>
+      <span style={{ fontSize: 11, color: "#475569", fontFamily: "'Inter', sans-serif" }}>© 2026 CandiApply · Made in 🇫🇷</span>
+    </footer>
+  );
+}
+
 // ── PAGE PRINCIPALE ───────────────────────────────────────────────────────────
 export function LandingPage({ onShowDemo }) {
   const [count,    setCount]    = useState(WAITLIST_CONFIG.baseCount);
   const [scrolled, setScrolled] = useState(false);
   const formRef = useRef(null);
 
-  // Chargement initial + polling du compteur
   useEffect(() => {
     getWaitlistCount().then((n) => setCount(WAITLIST_CONFIG.baseCount + n));
     const poll = setInterval(
@@ -429,7 +530,6 @@ export function LandingPage({ onShowDemo }) {
   return (
     <div style={{ background: B.background, color: B.foreground, fontFamily: "'Inter', sans-serif", overflowX: "hidden", minHeight: "100vh" }}>
       <style>{GLOBAL_CSS}</style>
-
       <Navbar    count={count} onSignup={scrollToForm} onDemo={onShowDemo} scrolled={scrolled} />
       <Hero      count={count} onSignup={scrollToForm} onDemo={onShowDemo} />
       <Marquee   />
@@ -437,7 +537,7 @@ export function LandingPage({ onShowDemo }) {
       <FeaturesSection />
       <JourneeSection  />
       <WaitlistSection count={count} onSuccess={(n) => setCount(n)} formRef={formRef} />
-<FAQSection />
+      <FAQSection />
       <Footer    />
     </div>
   );
