@@ -83,41 +83,62 @@ export function WaitlistForm({ onSuccess }) {
         textAlign: "center", padding: "28px 16px",
         background: "#F0FDF4", border: "1px solid #BBF7D0",
         borderRadius: B.radius, animation: "fadeUp 0.4s ease",
+        display: "flex", flexDirection: "column", gap: 16,
       }}>
-        <div style={{ fontSize: 40, marginBottom: 12 }}>🎉</div>
-        <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 700, color: B.foreground, marginBottom: 8 }}>
-          Bienvenue {firstName} !
+
+        {/* 1. Bienvenue */}
+        <div>
+          <div style={{ fontSize: 40, marginBottom: 10 }}>🎉</div>
+          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 700, color: B.foreground }}>
+            Bienvenue {firstName} !
+          </div>
         </div>
-        <p style={{ fontSize: 13, color: B.muted, lineHeight: "1.65", marginBottom: 18, fontFamily: "'Inter', sans-serif" }}>
-          Tu es la{" "}
-          <strong style={{ color: B.green, fontSize: 17 }}>
+
+        {/* 2. Position dans la liste */}
+        <div style={{
+          background: B.card, border: `1px solid ${B.border}`,
+          borderRadius: B.radius, padding: "14px 16px",
+        }}>
+          <div style={{ fontSize: 12, color: B.muted, marginBottom: 4, fontFamily: "'Inter', sans-serif" }}>
+            Ta position sur la liste
+          </div>
+          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 32, fontWeight: 800, color: B.green, lineHeight: 1 }}>
             #{(position + WAITLIST_CONFIG.baseCount)?.toLocaleString("fr-FR")}
-          </strong>{" "}
-          personne sur la liste.<br />
-          Confirmation envoyée à <strong style={{ color: B.foreground }}>{email}</strong>
+          </div>
+        </div>
+
+        {/* 3. Email de confirmation */}
+        <p style={{ fontSize: 13, color: B.muted, lineHeight: "1.65", margin: 0, fontFamily: "'Inter', sans-serif" }}>
+          📩 Un email de confirmation a été envoyé à{" "}
+          <strong style={{ color: B.foreground }}>{email}</strong>
         </p>
 
-        {/* Bouton questionnaire Tally */}
+        {/* Séparateur */}
+        <div style={{ height: 1, background: B.border, margin: "0 8px" }} />
+
+        {/* 4. Message questionnaire */}
+        <p style={{ fontSize: 13, color: B.muted, lineHeight: "1.7", margin: 0, fontFamily: "'Inter', sans-serif" }}>
+          Maintenant que tu es sur la liste d'attente, nous souhaitons connaître tes vraies besoins pour que l'outil puisse y répondre au maximum.
+        </p>
+
+        {/* 5. Bouton Tally */}
         <button
           data-tally-open="44jKYB"
           data-tally-emoji-text="👋"
           data-tally-emoji-animation="wave"
           style={{
-            width: "100%", padding: "12px", borderRadius: B.radius,
+            width: "100%", padding: "13px", borderRadius: B.radius,
             background: B.primary, color: "#fff", border: "none",
             fontSize: 14, fontWeight: 700, cursor: "pointer",
             fontFamily: "'Space Grotesk', sans-serif",
-            boxShadow: B.shadowCard, marginBottom: 12,
+            boxShadow: B.shadowCard,
             display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
           }}
         >
           📋 Répondre au questionnaire (2 min)
         </button>
-        <p style={{ fontSize: 11, color: B.muted, marginBottom: 16, fontFamily: "'Inter', sans-serif" }}>
-          Aide-nous à construire l'outil dont tu as vraiment besoin 💙
-        </p>
 
-        {/* Partage */}
+        {/* 6. Réseaux sociaux */}
         <div style={{ background: B.card, border: `1px solid ${B.border}`, borderRadius: B.radius, padding: "12px 16px" }}>
           <p style={{ fontSize: 12, color: B.muted, marginBottom: 8, fontFamily: "'Inter', sans-serif" }}>
             📣 Partage pour monter dans la liste
@@ -135,7 +156,7 @@ export function WaitlistForm({ onSuccess }) {
                 style={{
                   padding: "7px 16px", borderRadius: 8,
                   background: `${color}12`, border: `1px solid ${color}30`,
-                  color, fontSize: 12, fontWeight: 600, cursor: "pointer",
+                  color, fontSize: 12, fontWeight: 600,
                   fontFamily: "'Inter', sans-serif", textDecoration: "none",
                 }}
               >
@@ -144,6 +165,7 @@ export function WaitlistForm({ onSuccess }) {
             ))}
           </div>
         </div>
+
       </div>
     );
   }
