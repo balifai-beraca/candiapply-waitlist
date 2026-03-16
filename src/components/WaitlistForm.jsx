@@ -6,6 +6,17 @@ import { useState, useEffect } from "react";
 import { B, ROLE_OPTIONS, WAITLIST_CONFIG } from "../constants";
 import { addToWaitlist } from "../lib/supabase";
 
+// ── Chargement du script Tally (une seule fois) ───────────────────────────────
+function useTallyScript() {
+  useEffect(() => {
+    if (document.querySelector('script[src="https://tally.so/widgets/embed.js"]')) return;
+    const script = document.createElement("script");
+    script.src = "https://tally.so/widgets/embed.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+}
+
 // ── HOOK RESPONSIVE ───────────────────────────────────────────────────────────
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(
@@ -35,6 +46,7 @@ const inputStyle = {
 
 export function WaitlistForm({ onSuccess }) {
   const isMobile = useIsMobile();
+  useTallyScript();
 
   const [firstName, setFirstName] = useState("");
   const [email,     setEmail]     = useState("");
@@ -83,6 +95,26 @@ export function WaitlistForm({ onSuccess }) {
           </strong>{" "}
           personne sur la liste.<br />
           Confirmation envoyée à <strong style={{ color: B.foreground }}>{email}</strong>
+        </p>
+
+        {/* Bouton questionnaire Tally */}
+        <button
+          data-tally-open="44jKYB"
+          data-tally-emoji-text="👋"
+          data-tally-emoji-animation="wave"
+          style={{
+            width: "100%", padding: "12px", borderRadius: B.radius,
+            background: B.primary, color: "#fff", border: "none",
+            fontSize: 14, fontWeight: 700, cursor: "pointer",
+            fontFamily: "'Space Grotesk', sans-serif",
+            boxShadow: B.shadowCard, marginBottom: 12,
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+          }}
+        >
+          📋 Répondre au questionnaire (2 min)
+        </button>
+        <p style={{ fontSize: 11, color: B.muted, marginBottom: 16, fontFamily: "'Inter', sans-serif" }}>
+          Aide-nous à construire l'outil dont tu as vraiment besoin 💙
         </p>
 
         {/* Partage */}
