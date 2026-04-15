@@ -1,0 +1,1 @@
+CREATE POLICY "Allow anonymous updates on waitlist" ON public.waitlist FOR UPDATE TO anon USING (true) WITH CHECK (true);

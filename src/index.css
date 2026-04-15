@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Brand */
+    --brand:          201 82% 44%;   /* #1192D0 */
+    --brand-hover:    201 82% 35%;   /* #0c6fa0 */
+
+    /* Surfaces */
+    --background:     213 27% 97%;   /* #f6f8fb */
+    --foreground:     214 100% 10%;  /* #001935 */
+
+    --card:           0 0% 100%;
+    --card-foreground: 214 100% 10%;
+
+    --popover:        0 0% 100%;
+    --popover-foreground: 214 100% 10%;
+
+    --primary:        201 82% 44%;   /* #1192D0 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary:      214 20% 94%;
+    --secondary-foreground: 214 100% 10%;
+
+    --muted:          213 27% 97%;
+    --muted-foreground: 215 16% 47%; /* #64748b */
+
+    --accent:         201 82% 95%;   /* #e8f5fd */
+    --accent-foreground: 201 82% 40%;
+
+    --destructive:    0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border:         214 15% 91%;
+    --input:          214 15% 91%;
+    --ring:           201 82% 44%;
+
+    --radius: 0.75rem;
+
+    /* Legacy custom props kept for compatibility */
+    --gradient-hero:   hsl(201 82% 44%);
+    --gradient-subtle: hsl(201 82% 96%);
+    --shadow-card:     0 4px 20px rgba(0,0,0,0.08);
+    --shadow-elevated: 0 12px 48px rgba(17,146,208,0.14);
+
+    --font-display: 'Syne', sans-serif;
+    --font-body:    'Inter', sans-serif;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer utilities {
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+  .gradient-subtle {
+    background: var(--gradient-subtle);
+  }
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  .shadow-elevated {
+    box-shadow: var(--shadow-elevated);
+  }
+}

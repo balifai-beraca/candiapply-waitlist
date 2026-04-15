@@ -4,6 +4,9 @@
 .env.*.local
 .env.production
 
+# Supabase integration with hardcoded keys — use env vars instead
+src/integrations/
+
 # Logs
 logs
 *.log
