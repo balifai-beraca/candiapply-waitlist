@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// pages/LandingPage.jsx — Landing page waitlist CandiApply (RESPONSIVE FIX)
+// pages/LandingPage.jsx — Landing page waitlist CandiApply · Design system v2
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useState, useEffect, useRef } from "react";
@@ -7,6 +7,8 @@ import { B, WAITLIST_CONFIG, MARQUEE_ITEMS, PROBLEMS, FEATURES, STEPS } from "..
 import { getWaitlistCount } from "../lib/supabase";
 import { Logo, LiveCounter, Avatars, Pill, SLabel, FeatureCard, Step } from "../components/UI";
 import { WaitlistForm } from "../components/WaitlistForm";
+
+const ease = "cubic-bezier(0.22,1,0.36,1)";
 
 // ── HOOK RESPONSIVE ───────────────────────────────────────────────────────────
 function useIsMobile(breakpoint = 768) {
@@ -23,17 +25,17 @@ function useIsMobile(breakpoint = 768) {
 
 // ── GLOBAL STYLES ─────────────────────────────────────────────────────────────
 const GLOBAL_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  @keyframes fadeUp  { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp  { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes spin    { to { transform: rotate(360deg); } }
   @keyframes blink   { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
   @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  input::placeholder  { color: #6B7280; font-family: 'Inter', sans-serif; }
-  select option       { color: #17304A; background: #fff; }
-  button:hover:not(:disabled) { filter: brightness(0.92); }
+  @keyframes ping    { 75%, 100% { transform: scale(2); opacity: 0; } }
+  input::placeholder  { color: #93BBCC; font-family: 'Inter', sans-serif; }
+  select option       { color: #001935; background: #fff; }
+  button:hover:not(:disabled) { filter: brightness(0.93); }
   ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-thumb { background: #E2E6EA; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 4px; }
 `;
 
 // ── NAVBAR ────────────────────────────────────────────────────────────────────
@@ -43,22 +45,23 @@ function Navbar({ count, onSignup, onDemo, scrolled }) {
   return (
     <nav style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-      height: 60, padding: isMobile ? "0 16px" : "0 32px",
+      height: 64, padding: isMobile ? "0 16px" : "0 40px",
       display: "flex", alignItems: "center", justifyContent: "space-between",
-      background: scrolled ? "rgba(246,248,250,0.96)" : B.background,
-      borderBottom: `1px solid ${scrolled ? B.border : "transparent"}`,
-      backdropFilter: scrolled ? "blur(10px)" : "none",
-      transition: "all 0.25s",
+      background: scrolled ? "rgba(255,255,255,0.9)" : B.background,
+      borderBottom: `1px solid ${scrolled ? "rgba(0,0,0,0.07)" : "transparent"}`,
+      backdropFilter: scrolled ? "blur(20px)" : "none",
+      boxShadow: scrolled ? B.shadowNav : "none",
+      transition: `all 0.25s ${ease}`,
     }}>
-      <Logo size={32} />
+      <Logo size={30} />
 
       <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 8 : 12 }}>
         {/* Compteur live */}
         <div style={{
           display: "flex", alignItems: "center", gap: 6,
           padding: isMobile ? "5px 8px" : "5px 12px",
-          borderRadius: 100, background: B.accent,
-          border: `1px solid ${B.primary}25`,
+          borderRadius: 9999, background: B.accent,
+          border: "1px solid rgba(17,146,208,0.2)",
         }}>
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: B.green, display: "inline-block", animation: "blink 2s infinite", flexShrink: 0 }} />
           <span style={{ fontSize: 11, color: B.primary, fontWeight: 600, fontFamily: "'Inter', sans-serif", whiteSpace: "nowrap" }}>
@@ -66,13 +69,13 @@ function Navbar({ count, onSignup, onDemo, scrolled }) {
           </span>
         </div>
 
-        {/* Bouton démo — masqué sur mobile */}
         {!isMobile && (
           <button onClick={onDemo} style={{
             padding: "8px 16px", borderRadius: B.radius,
             border: `1px solid ${B.border}`, background: B.card,
-            color: B.muted, fontSize: 13, fontWeight: 600,
+            color: B.muted, fontSize: 13, fontWeight: 500,
             cursor: "pointer", fontFamily: "'Inter', sans-serif",
+            transition: `color 0.2s ${ease}`,
           }}>
             Voir une démo
           </button>
@@ -80,13 +83,14 @@ function Navbar({ count, onSignup, onDemo, scrolled }) {
 
         <button onClick={onSignup} style={{
           padding: isMobile ? "8px 14px" : "8px 20px",
-          borderRadius: B.radius, border: "none",
+          borderRadius: B.radiusMd, border: "none",
           background: B.primary, color: "#fff",
-          fontSize: isMobile ? 12 : 13, fontWeight: 700,
-          cursor: "pointer", fontFamily: "'Space Grotesk', sans-serif",
+          fontSize: isMobile ? 12 : 13, fontWeight: 600,
+          cursor: "pointer", fontFamily: "'Inter', sans-serif",
           boxShadow: B.shadowCard, whiteSpace: "nowrap",
+          transition: `all 0.2s ${ease}`,
         }}>
-          {isMobile ? "S'inscrire" : "S'inscrire"}
+          S'inscrire
         </button>
       </div>
     </nav>
@@ -99,34 +103,38 @@ function Hero({ count, onSignup, onDemo }) {
 
   return (
     <section style={{
-      paddingTop: isMobile ? 88 : 108,
-      paddingBottom: isMobile ? 48 : 72,
+      paddingTop: isMobile ? 96 : 120,
+      paddingBottom: isMobile ? 56 : 80,
       paddingLeft: 24, paddingRight: 24,
-      textAlign: "center", background: B.background,
-      position: "relative", overflow: "hidden",
+      textAlign: "center", position: "relative", overflow: "hidden",
+      background: `
+        radial-gradient(ellipse 70% 50% at 25% 50%, rgba(17,146,208,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 75% 60%, rgba(16,185,129,0.04) 0%, transparent 70%),
+        ${B.background}
+      `,
     }}>
-      {/* Halo */}
+      {/* Dot grid */}
       <div style={{
-        position: "absolute", top: 60, left: "50%",
-        transform: "translateX(-50%)",
-        width: isMobile ? 320 : 700, height: isMobile ? 200 : 400,
-        borderRadius: "50%", background: B.accent,
-        opacity: 0.5, filter: "blur(60px)", pointerEvents: "none",
+        position: "absolute", inset: 0, pointerEvents: "none",
+        backgroundImage: "radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px)",
+        backgroundSize: "36px 36px",
+        WebkitMaskImage: "radial-gradient(ellipse 60% 50% at 50% 50%, black 30%, transparent 70%)",
+        maskImage: "radial-gradient(ellipse 60% 50% at 50% 50%, black 30%, transparent 70%)",
       }} />
 
-      <div style={{ position: "relative", maxWidth: 740, margin: "0 auto" }}>
-        {/* Badge */}
-        <div style={{ marginBottom: 22, animation: "fadeUp 0.4s ease 0.05s both" }}>
-          <Pill dot>Bientôt disponible — Inscriptions ouvertes</Pill>
+      <div style={{ position: "relative", maxWidth: 760, margin: "0 auto" }}>
+        {/* Badge avec ping animé */}
+        <div style={{ marginBottom: 24, animation: `fadeUp 0.6s ${ease} 0.05s both` }}>
+          <Pill dot>Bêta ouverte · Marché français</Pill>
         </div>
 
-        {/* H1 */}
+        {/* H1 — Syne 800 */}
         <h1 style={{
-          fontFamily: "'Space Grotesk', sans-serif",
-          fontSize: "clamp(24px,4.5vw,52px)",
-          fontWeight: 700, lineHeight: 1.2,
-          letterSpacing: "-0.03em", color: B.foreground,
-          margin: "0 0 20px", animation: "fadeUp 0.4s ease 0.1s both",
+          fontFamily: "'Syne', sans-serif",
+          fontSize: isMobile ? "clamp(32px,8vw,42px)" : "clamp(42px,5.5vw,58px)",
+          fontWeight: 800, lineHeight: 1.05,
+          letterSpacing: "-0.05em", color: B.foreground,
+          margin: "0 0 22px", animation: `fadeUp 0.7s ${ease} 0.1s both`,
         }}>
           Trouvez votre prochain emploi<br />
           <span style={{ color: B.primary }}>sans passer des heures à chercher</span>
@@ -134,16 +142,16 @@ function Hero({ count, onSignup, onDemo }) {
 
         {/* Sous-titre */}
         <p style={{
-          fontSize: "clamp(14px,2vw,17px)", color: B.muted,
-          lineHeight: "1.7", maxWidth: 500, margin: "0 auto 28px",
-          animation: "fadeUp 0.4s ease 0.15s both",
+          fontSize: 17, color: B.muted,
+          lineHeight: 1.72, maxWidth: 500, margin: "0 auto 30px",
+          animation: `fadeUp 0.7s ${ease} 0.15s both`,
         }}>
           CandiApply analyse votre profil, détecte les offres qui vous correspondent, personnalise vos candidatures et vous prépare aux entretiens —{" "}
-          <strong style={{ color: B.foreground }}>tout en un, chaque matin.</strong>
+          <strong style={{ color: B.tx2 }}>tout en un, chaque matin.</strong>
         </p>
 
         {/* Social proof */}
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: 28, animation: "fadeUp 0.4s ease 0.2s both" }}>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 30, animation: `fadeUp 0.7s ${ease} 0.2s both` }}>
           <Avatars count={count} />
         </div>
 
@@ -152,37 +160,39 @@ function Hero({ count, onSignup, onDemo }) {
           display: "flex", gap: 12, justifyContent: "center",
           flexDirection: isMobile ? "column" : "row",
           alignItems: "center",
-          marginBottom: 12, animation: "fadeUp 0.4s ease 0.25s both",
+          marginBottom: 14, animation: `fadeUp 0.7s ${ease} 0.25s both`,
           padding: isMobile ? "0 16px" : 0,
         }}>
           <button onClick={onSignup} style={{
-            padding: "13px 28px", borderRadius: B.radius,
+            padding: "13px 28px", borderRadius: B.radiusMd,
             border: "none", background: B.primary, color: "#fff",
-            fontSize: 15, fontWeight: 700, cursor: "pointer",
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: 15, fontWeight: 600, cursor: "pointer",
+            fontFamily: "'Inter', sans-serif",
             boxShadow: B.shadowElev,
             width: isMobile ? "100%" : "auto",
+            transition: `all 0.2s ${ease}`,
           }}>
-            Rejoindre la liste d'attente →
+            Commencer maintenant →
           </button>
           <button onClick={onDemo} style={{
-            padding: "13px 22px", borderRadius: B.radius,
-            border: `1.5px solid ${B.border}`, background: B.card,
-            color: B.muted, fontSize: 15, fontWeight: 600,
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            padding: "13px 20px", borderRadius: B.radiusMd,
+            border: "none", background: "transparent",
+            color: B.tx2, fontSize: 15, fontWeight: 500,
             cursor: "pointer", fontFamily: "'Inter', sans-serif",
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
             width: isMobile ? "100%" : "auto",
+            transition: `color 0.2s ${ease}`,
           }}>
-            Voir une démo <span style={{ fontSize: 11 }}>▶</span>
+            <span style={{ width: 32, height: 32, borderRadius: "50%", background: B.accent, display: "flex", alignItems: "center", justifyContent: "center", color: B.primary, fontSize: 12, flexShrink: 0 }}>▶</span>
+            Voir une démo
           </button>
         </div>
 
-        <p style={{ fontSize: 12, color: B.muted, animation: "fadeUp 0.4s ease 0.3s both", fontFamily: "'Inter', sans-serif" }}>
+        <p style={{ fontSize: 12, color: B.muted, animation: `fadeUp 0.7s ${ease} 0.3s both`, fontFamily: "'Inter', sans-serif" }}>
           Accès prioritaire · Gratuit · Sans engagement · RGPD 🇫🇷
         </p>
       </div>
 
-      {/* App preview — masquée sur mobile */}
       {!isMobile && <AppPreview />}
     </section>
   );
@@ -210,9 +220,9 @@ function AppPreview() {
   ];
 
   return (
-    <div style={{ maxWidth: 820, margin: "52px auto 0", position: "relative", animation: "fadeUp 0.6s ease 0.35s both" }}>
-      <div style={{ background: B.card, border: `1px solid ${B.border}`, borderRadius: 18, padding: 16, boxShadow: B.shadowElev }}>
-        {/* Chrome */}
+    <div style={{ maxWidth: 820, margin: "52px auto 0", position: "relative", animation: `fadeUp 0.9s ${ease} 0.3s both` }}>
+      <div style={{ background: B.card, border: `1px solid ${B.border}`, borderRadius: B.radiusLg, padding: 16, boxShadow: B.shadowElev }}>
+        {/* Chrome bar */}
         <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 14 }}>
           <div style={{ display: "flex", gap: 6 }}>
             {["#EF4444", B.orange, B.green].map((c) => (
@@ -224,7 +234,6 @@ function AppPreview() {
           </div>
         </div>
 
-        {/* Grid 3 colonnes */}
         <div style={{ display: "grid", gridTemplateColumns: "156px 1fr 184px", gap: 10, height: 226 }}>
           {/* Sidebar */}
           <div style={{ background: B.background, borderRadius: 10, padding: 10, display: "flex", flexDirection: "column", gap: 3, border: `1px solid ${B.border}` }}>
@@ -252,10 +261,10 @@ function AppPreview() {
                 <div key={company} style={{ background: B.card, borderRadius: 8, padding: "7px 10px", display: "flex", alignItems: "center", gap: 8, border: `1px solid ${B.border}`, boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}>
                   <div style={{ width: 26, height: 26, borderRadius: 7, background: `${color}14`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, flexShrink: 0 }}>{badge}</div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: B.foreground, fontFamily: "'Space Grotesk', sans-serif" }}>{company}</div>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: B.foreground, fontFamily: "'Syne', sans-serif" }}>{company}</div>
                     <div style={{ fontSize: 10, color: B.muted, fontFamily: "'Inter', sans-serif" }}>{role}</div>
                   </div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color, fontFamily: "'Space Grotesk', sans-serif", flexShrink: 0 }}>{score}</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color, fontFamily: "'Syne', sans-serif", flexShrink: 0 }}>{score}</div>
                 </div>
               ))}
             </div>
@@ -272,14 +281,13 @@ function AppPreview() {
                 {label}
               </div>
             ))}
-            <div style={{ marginTop: "auto", background: B.accent, borderRadius: 8, padding: 8, border: `1px solid ${B.primary}25`, textAlign: "center" }}>
-              <div style={{ fontSize: 15, fontWeight: 700, color: B.primary, fontFamily: "'Space Grotesk', sans-serif" }}>2/4</div>
+            <div style={{ marginTop: "auto", background: B.accent, borderRadius: 8, padding: 8, border: `1px solid rgba(17,146,208,0.2)`, textAlign: "center" }}>
+              <div style={{ fontSize: 15, fontWeight: 700, color: B.primary, fontFamily: "'Syne', sans-serif" }}>2/4</div>
               <div style={{ fontSize: 8, color: B.muted, fontFamily: "'Inter', sans-serif" }}>tâches faites</div>
             </div>
           </div>
         </div>
       </div>
-      {/* Fade bas */}
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 64, background: `linear-gradient(to top, ${B.background}, transparent)`, borderRadius: "0 0 18px 18px", pointerEvents: "none" }} />
     </div>
   );
@@ -304,24 +312,28 @@ function Marquee() {
   );
 }
 
-// ── SECTION PROBLÈME ─────────────────────────────────────────────────────────
+// ── SECTION PROBLÈME (fond sombre) ───────────────────────────────────────────
 function ProblemSection() {
   return (
-    <section style={{ padding: "72px 24px", background: B.card, borderBottom: `1px solid ${B.border}` }}>
-      <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
-        <SLabel>Le problème</SLabel>
-        <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(22px,4vw,38px)", fontWeight: 700, color: B.foreground, letterSpacing: "-0.025em", lineHeight: 1.2, marginBottom: 16 }}>
+    <section style={{ padding: "80px 24px", background: B.bgDark }}>
+      <div style={{ maxWidth: 820, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ marginBottom: 14 }}><SLabel dark>Le problème</SLabel></div>
+        <h2 style={{
+          fontFamily: "'Syne', sans-serif", fontWeight: 800,
+          fontSize: "clamp(28px,4vw,44px)", letterSpacing: "-0.04em", lineHeight: 1.1,
+          color: "#ffffff", marginBottom: 16,
+        }}>
           La recherche d'emploi est<br />un travail à plein temps
         </h2>
-        <p style={{ fontSize: 15, color: B.muted, lineHeight: "1.7", maxWidth: 520, margin: "0 auto 40px" }}>
+        <p style={{ fontSize: 17, color: "rgba(255,255,255,0.45)", lineHeight: 1.72, maxWidth: 520, margin: "0 auto 44px" }}>
           Surveiller des dizaines de sites, adapter son CV pour chaque offre, relancer sans oublier personne… tout ça en parallèle d'une vie normale.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: 14 }}>
           {PROBLEMS.map(({ icon, title, desc }) => (
-            <div key={title} style={{ background: B.background, border: `1px solid ${B.border}`, borderRadius: B.radius, padding: "20px", textAlign: "left", boxShadow: B.shadowCard }}>
-              <div style={{ fontSize: 26, marginBottom: 10 }}>{icon}</div>
-              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, fontWeight: 700, color: B.foreground, marginBottom: 6 }}>{title}</div>
-              <div style={{ fontSize: 13, color: B.muted, lineHeight: "1.6", fontFamily: "'Inter', sans-serif" }}>{desc}</div>
+            <div key={title} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: B.radiusLg, padding: "24px", textAlign: "left", boxShadow: "0 4px 20px rgba(0,0,0,0.2)" }}>
+              <div style={{ fontSize: 28, marginBottom: 12 }}>{icon}</div>
+              <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 16, fontWeight: 700, color: "#ffffff", marginBottom: 8 }}>{title}</div>
+              <div style={{ fontSize: 14, color: "rgba(255,255,255,0.4)", lineHeight: "1.65", fontFamily: "'Inter', sans-serif" }}>{desc}</div>
             </div>
           ))}
         </div>
@@ -333,16 +345,20 @@ function ProblemSection() {
 // ── SECTION FEATURES ──────────────────────────────────────────────────────────
 function FeaturesSection() {
   return (
-    <section style={{ padding: "72px 24px", background: B.background, borderBottom: `1px solid ${B.border}` }}>
-      <div style={{ maxWidth: 980, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: 44 }}>
-          <SLabel>6 modules · 1 pipeline</SLabel>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(22px,4vw,38px)", fontWeight: 700, color: B.foreground, letterSpacing: "-0.025em", lineHeight: 1.2 }}>
+    <section style={{ padding: "80px 24px", background: B.background, borderBottom: `1px solid ${B.border}` }}>
+      <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <div style={{ marginBottom: 14 }}><SLabel>6 modules · 1 pipeline</SLabel></div>
+          <h2 style={{
+            fontFamily: "'Syne', sans-serif", fontWeight: 800,
+            fontSize: "clamp(28px,4vw,44px)", letterSpacing: "-0.04em", lineHeight: 1.1,
+            color: B.foreground,
+          }}>
             Tout ce dont vous avez besoin.<br />
             <span style={{ color: B.muted }}>Rien de superflu.</span>
           </h2>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(260px,1fr))", gap: 14 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 16 }}>
           {FEATURES.map((feature, i) => (
             <FeatureCard key={feature.title} {...feature} delay={0.04 + i * 0.06} />
           ))}
@@ -355,11 +371,15 @@ function FeaturesSection() {
 // ── SECTION "TA JOURNÉE" ──────────────────────────────────────────────────────
 function JourneeSection() {
   return (
-    <section style={{ padding: "72px 24px", background: B.card, borderBottom: `1px solid ${B.border}` }}>
+    <section style={{ padding: "80px 24px", background: B.card, borderBottom: `1px solid ${B.border}` }}>
       <div style={{ maxWidth: 640, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: 44 }}>
-          <SLabel>Ta journée avec CandiApply</SLabel>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(22px,4vw,38px)", fontWeight: 700, color: B.foreground, letterSpacing: "-0.025em", lineHeight: 1.2 }}>
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <div style={{ marginBottom: 14 }}><SLabel>Ta journée avec CandiApply</SLabel></div>
+          <h2 style={{
+            fontFamily: "'Syne', sans-serif", fontWeight: 800,
+            fontSize: "clamp(28px,4vw,44px)", letterSpacing: "-0.04em", lineHeight: 1.1,
+            color: B.foreground,
+          }}>
             1h par jour.<br />Pas plus.
           </h2>
         </div>
@@ -371,53 +391,64 @@ function JourneeSection() {
   );
 }
 
-// ── SECTION WAITLIST ──────────────────────────────────────────────────────────
+// ── SECTION WAITLIST (fond sombre + glow) ─────────────────────────────────────
 function WaitlistSection({ count, onSuccess, formRef }) {
   return (
     <section
       ref={formRef}
       data-waitlist-section
-      style={{ padding: "72px 20px 96px", background: B.accent, borderTop: `1px solid ${B.primary}20` }}
+      style={{
+        padding: "80px 20px 100px",
+        background: `
+          radial-gradient(ellipse 50% 50% at 50% 50%, rgba(17,146,208,0.15) 0%, transparent 70%),
+          ${B.bgDark}
+        `,
+        borderTop: "1px solid rgba(17,146,208,0.12)",
+      }}
     >
       <div style={{ maxWidth: 460, margin: "0 auto" }}>
-        {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: 28 }}>
-          <div style={{ marginBottom: 14 }}>
-            <Pill>🚀 Accès bêta prioritaire — Places limitées</Pill>
+        <div style={{ textAlign: "center", marginBottom: 32 }}>
+          <div style={{ marginBottom: 16 }}>
+            <Pill dark>🚀 Accès bêta prioritaire — Places limitées</Pill>
           </div>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(24px,4.5vw,38px)", fontWeight: 700, color: B.foreground, letterSpacing: "-0.025em", lineHeight: 1.2, marginBottom: 10 }}>
+          <h2 style={{
+            fontFamily: "'Syne', sans-serif", fontWeight: 800,
+            fontSize: "clamp(26px,4.5vw,40px)", letterSpacing: "-0.04em", lineHeight: 1.1,
+            color: "#ffffff", marginBottom: 12,
+          }}>
             Ton prochain entretien<br />
             <span style={{ color: B.primary }}>commence ici.</span>
           </h2>
-          <p style={{ fontSize: 14, color: B.muted, lineHeight: "1.65", fontFamily: "'Inter', sans-serif" }}>
+          <p style={{ fontSize: 15, color: "rgba(255,255,255,0.45)", lineHeight: "1.65", fontFamily: "'Inter', sans-serif" }}>
             Inscris-toi maintenant. Les 100 premiers ont accès au plan Pro{" "}
-            <strong>gratuit pendant 1 an.</strong>
+            <strong style={{ color: "rgba(255,255,255,0.8)" }}>gratuit pendant 1 an.</strong>
           </p>
         </div>
 
         {/* Formulaire */}
-        <div style={{ background: B.card, border: `1px solid ${B.border}`, borderRadius: 16, padding: "28px 20px", boxShadow: B.shadowElev }}>
+        <div style={{ background: B.card, border: `1px solid ${B.border}`, borderRadius: B.radiusLg, padding: "28px 20px", boxShadow: B.shadowElev }}>
           <WaitlistForm onSuccess={onSuccess} />
         </div>
 
         {/* Compteur live */}
         <div style={{
-          marginTop: 14, background: B.card,
-          border: `1px solid ${B.border}`, borderRadius: B.radius,
+          marginTop: 14,
+          background: "rgba(255,255,255,0.05)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          borderRadius: B.radius,
           padding: "12px 16px",
           display: "flex", justifyContent: "space-between",
           alignItems: "center", gap: 8, flexWrap: "wrap",
-          boxShadow: B.shadowCard,
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
             <span style={{ width: 7, height: 7, borderRadius: "50%", background: B.green, display: "inline-block", animation: "blink 1.8s infinite", flexShrink: 0 }} />
-            <span style={{ fontSize: 12, color: B.muted, fontFamily: "'Inter', sans-serif" }}>
-              <strong style={{ color: B.foreground, fontWeight: 600 }}>
+            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", fontFamily: "'Inter', sans-serif" }}>
+              <strong style={{ color: "#fff", fontWeight: 600 }}>
                 <LiveCounter value={count} />
               </strong>{" "}personnes inscrites
             </span>
           </div>
-          <span style={{ fontSize: 11, color: "#92400E", fontWeight: 600, background: "#FEF3C7", border: "1px solid #FDE68A", borderRadius: 6, padding: "2px 8px", fontFamily: "'Inter', sans-serif", whiteSpace: "nowrap" }}>
+          <span style={{ fontSize: 11, color: "#92400E", fontWeight: 700, background: "#FEF3C7", border: "1px solid #FDE68A", borderRadius: 6, padding: "2px 8px", fontFamily: "'Inter', sans-serif", whiteSpace: "nowrap" }}>
             {Math.max(0, WAITLIST_CONFIG.maxProSlots - count)} places Pro restantes
           </span>
         </div>
@@ -449,11 +480,15 @@ const FAQS = [
 function FAQSection() {
   const [open, setOpen] = useState(null);
   return (
-    <section style={{ padding: "72px 24px", background: B.background, borderBottom: `1px solid ${B.border}` }}>
+    <section style={{ padding: "80px 24px", background: B.background, borderBottom: `1px solid ${B.border}` }}>
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: 44 }}>
-          <SLabel>FAQ</SLabel>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(22px,4vw,38px)", fontWeight: 700, color: B.foreground, letterSpacing: "-0.025em", lineHeight: 1.2 }}>
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <div style={{ marginBottom: 14 }}><SLabel>FAQ</SLabel></div>
+          <h2 style={{
+            fontFamily: "'Syne', sans-serif", fontWeight: 800,
+            fontSize: "clamp(28px,4vw,44px)", letterSpacing: "-0.04em", lineHeight: 1.1,
+            color: B.foreground,
+          }}>
             Questions fréquentes
           </h2>
         </div>
@@ -461,16 +496,16 @@ function FAQSection() {
           {FAQS.map((faq, i) => {
             const isOpen = open === i;
             return (
-              <div key={i} style={{ background: B.card, border: `1px solid ${isOpen ? B.primary + "40" : B.border}`, borderRadius: B.radius, overflow: "hidden", transition: "border-color 0.2s" }}>
+              <div key={i} style={{ background: B.card, border: `1px solid ${isOpen ? "rgba(17,146,208,0.3)" : B.border}`, borderRadius: B.radius, overflow: "hidden", transition: `border-color 0.2s ${ease}` }}>
                 <button
                   onClick={() => setOpen(isOpen ? null : i)}
                   style={{ width: "100%", padding: "18px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, background: "transparent", border: "none", cursor: "pointer", textAlign: "left" }}
                 >
-                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, color: B.foreground, lineHeight: 1.4 }}>{faq.question}</span>
-                  <span style={{ flexShrink: 0, width: 22, height: 22, borderRadius: "50%", background: isOpen ? B.primary : B.accent, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, color: isOpen ? "#fff" : B.muted, transition: "all 0.2s", transform: isOpen ? "rotate(45deg)" : "none" }}>+</span>
+                  <span style={{ fontFamily: "'Syne', sans-serif", fontSize: 15, fontWeight: 700, color: B.foreground, lineHeight: 1.4 }}>{faq.question}</span>
+                  <span style={{ flexShrink: 0, width: 22, height: 22, borderRadius: "50%", background: isOpen ? B.primary : B.accent, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, color: isOpen ? "#fff" : B.muted, transition: `all 0.2s ${ease}`, transform: isOpen ? "rotate(45deg)" : "none" }}>+</span>
                 </button>
                 {isOpen && (
-                  <div style={{ padding: "0 20px 18px", fontSize: 14, color: B.muted, lineHeight: "1.7", fontFamily: "'Inter', sans-serif" }}>
+                  <div style={{ padding: "0 20px 18px", fontSize: 15, color: B.muted, lineHeight: "1.7", fontFamily: "'Inter', sans-serif" }}>
                     {faq.answer}
                   </div>
                 )}
@@ -488,8 +523,9 @@ function Footer() {
   const isMobile = useIsMobile();
   return (
     <footer style={{
-      background: B.foreground,
-      padding: isMobile ? "24px 20px" : "24px 32px",
+      background: B.bgDarker,
+      borderTop: "1px solid rgba(255,255,255,0.06)",
+      padding: isMobile ? "24px 20px" : "24px 40px",
       display: "flex",
       flexDirection: isMobile ? "column" : "row",
       justifyContent: "space-between",
@@ -500,10 +536,15 @@ function Footer() {
       <Logo size={28} inverted />
       <div style={{ display: "flex", gap: isMobile ? 20 : 24 }}>
         {["CGU", "Confidentialité", "Contact"].map((label) => (
-          <span key={label} style={{ fontSize: 12, color: "#94A3B8", cursor: "pointer", fontFamily: "'Inter', sans-serif" }}>{label}</span>
+          <span key={label} style={{ fontSize: 12, color: "rgba(255,255,255,0.28)", cursor: "pointer", fontFamily: "'Inter', sans-serif", transition: `color 0.2s ${ease}` }}
+            onMouseEnter={e => (e.target.style.color = "rgba(255,255,255,0.65)")}
+            onMouseLeave={e => (e.target.style.color = "rgba(255,255,255,0.28)")}
+          >
+            {label}
+          </span>
         ))}
       </div>
-      <span style={{ fontSize: 11, color: "#475569", fontFamily: "'Inter', sans-serif" }}>© 2026 CandiApply · Made in 🇫🇷</span>
+      <span style={{ fontSize: 11, color: "rgba(255,255,255,0.28)", fontFamily: "'Inter', sans-serif" }}>© 2026 CandiApply · Made in 🇫🇷</span>
     </footer>
   );
 }
@@ -528,7 +569,7 @@ export function LandingPage({ onShowDemo }) {
   const scrollToForm = () => formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
 
   return (
-    <div style={{ background: B.background, color: B.foreground, fontFamily: "'Inter', sans-serif", overflowX: "hidden", minHeight: "100vh" }}>
+    <div style={{ background: B.background, color: B.tx2, fontFamily: "'Inter', sans-serif", overflowX: "hidden", minHeight: "100vh" }}>
       <style>{GLOBAL_CSS}</style>
       <Navbar    count={count} onSignup={scrollToForm} onDemo={onShowDemo} scrolled={scrolled} />
       <Hero      count={count} onSignup={scrollToForm} onDemo={onShowDemo} />

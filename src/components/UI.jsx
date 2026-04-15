@@ -5,9 +5,11 @@
 import { useState, useEffect, useRef } from "react";
 import { B, AVATAR_EMOJIS } from "../constants";
 
+const ease = "cubic-bezier(0.22,1,0.36,1)";
+
 // ── LOGO SVG ─────────────────────────────────────────────────────────────────
 export function Logo({ size = 32, inverted = false }) {
-  const ringColor = inverted ? "rgba(255,255,255,0.5)" : B.foreground;
+  const ringColor = inverted ? "rgba(255,255,255,0.5)" : B.tx2;
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
       <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
@@ -16,11 +18,11 @@ export function Logo({ size = 32, inverted = false }) {
         <circle cx="30" cy="20" r="3.5" fill={B.primary} />
       </svg>
       <span style={{
-        fontFamily: "'Space Grotesk', sans-serif",
+        fontFamily: "'Syne', sans-serif",
         fontSize: size * 0.56,
         fontWeight: 700,
         color: inverted ? "#fff" : B.foreground,
-        letterSpacing: "-0.02em",
+        letterSpacing: "-0.03em",
       }}>
         Candi<span style={{ color: B.primary }}>Apply</span>
       </span>
@@ -55,33 +57,24 @@ export function LiveCounter({ value }) {
 export function Avatars({ count }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-      {/* Emojis superposés */}
       <div style={{ display: "flex" }}>
         {AVATAR_EMOJIS.map((emoji, i) => (
           <div
             key={i}
             style={{
-              width: 30,
-              height: 30,
-              borderRadius: "50%",
-              background: B.accent,
-              border: `2px solid ${B.card}`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 14,
-              marginLeft: i === 0 ? 0 : -9,
+              width: 30, height: 30, borderRadius: "50%",
+              background: B.accent, border: `2px solid ${B.card}`,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: 14, marginLeft: i === 0 ? 0 : -9,
               zIndex: AVATAR_EMOJIS.length - i,
-              boxShadow: "0 1px 3px rgba(0,0,0,0.10)",
             }}
           >
             {emoji}
           </div>
         ))}
       </div>
-      {/* Texte */}
       <span style={{ fontSize: 13, color: B.muted, fontFamily: "'Inter', sans-serif" }}>
-        <strong style={{ color: B.foreground, fontWeight: 600 }}>
+        <strong style={{ color: B.tx2, fontWeight: 600 }}>
           <LiveCounter value={count} />
         </strong>{" "}
         personnes déjà inscrites
@@ -91,30 +84,29 @@ export function Avatars({ count }) {
 }
 
 // ── PILL BADGE ────────────────────────────────────────────────────────────────
-export function Pill({ children, dot = false }) {
+export function Pill({ children, dot = false, dark = false }) {
+  const bg = dark ? "rgba(17,146,208,0.1)" : B.accent;
   return (
     <span style={{
-      display: "inline-flex",
-      alignItems: "center",
-      gap: 6,
-      background: B.accent,
-      color: B.primary,
-      border: `1px solid ${B.primary}28`,
-      borderRadius: 100,
-      padding: "5px 14px",
-      fontSize: 12,
-      fontWeight: 600,
+      display: "inline-flex", alignItems: "center", gap: 8,
+      background: bg, color: B.primary,
+      border: "1px solid rgba(17,146,208,0.18)",
+      borderRadius: 9999, padding: "6px 16px",
+      fontSize: 13, fontWeight: 600,
       fontFamily: "'Inter', sans-serif",
     }}>
       {dot && (
-        <span style={{
-          width: 7,
-          height: 7,
-          borderRadius: "50%",
-          background: B.green,
-          display: "inline-block",
-          animation: "blink 2s infinite",
-        }} />
+        <span style={{ position: "relative", display: "inline-flex", width: 8, height: 8 }}>
+          <span style={{
+            position: "absolute", inset: 0, borderRadius: "50%",
+            background: B.primary, opacity: 0.75,
+            animation: "ping 1.5s cubic-bezier(0,0,0.2,1) infinite",
+          }} />
+          <span style={{
+            position: "relative", display: "inline-flex",
+            width: 8, height: 8, borderRadius: "50%", background: B.primary,
+          }} />
+        </span>
       )}
       {children}
     </span>
@@ -122,19 +114,20 @@ export function Pill({ children, dot = false }) {
 }
 
 // ── SECTION LABEL ─────────────────────────────────────────────────────────────
-export function SLabel({ children }) {
+export function SLabel({ children, dark = false }) {
   return (
-    <p style={{
-      fontSize: 11,
-      fontWeight: 600,
+    <span style={{
+      display: "inline-block",
+      background: dark ? "rgba(17,146,208,0.1)" : B.accent,
       color: B.primary,
-      letterSpacing: "0.15em",
-      textTransform: "uppercase",
-      margin: "0 0 12px",
+      fontSize: 11, fontWeight: 700,
+      padding: "5px 13px", borderRadius: 9999,
+      letterSpacing: "0.04em", textTransform: "uppercase",
       fontFamily: "'Inter', sans-serif",
+      marginBottom: 14,
     }}>
       {children}
-    </p>
+    </span>
   );
 }
 
@@ -148,65 +141,46 @@ export function FeatureCard({ icon, color = B.primary, title, desc, soon = false
       onMouseLeave={() => setHovered(false)}
       style={{
         background: B.card,
-        border: `1px solid ${hovered ? B.primary + "40" : B.border}`,
-        borderRadius: B.radius,
-        padding: "22px",
-        transition: "all 0.2s",
-        animation: `fadeUp 0.5s ease ${delay}s both`,
+        border: `1px solid ${hovered ? "rgba(17,146,208,0.25)" : B.border}`,
+        borderRadius: B.radiusLg,
+        padding: "24px",
+        transition: `all 0.2s ${ease}`,
+        animation: `fadeUp 0.5s ${ease} ${delay}s both`,
         position: "relative",
-        boxShadow: hovered ? B.shadowCard : "none",
+        boxShadow: hovered ? `${B.shadowCard}, 0 0 0 2px rgba(17,146,208,0.12)` : B.shadowCard,
         cursor: "default",
       }}
     >
-      {/* Badge "Bientôt" */}
       {soon && (
         <span style={{
-          position: "absolute",
-          top: 14,
-          right: 14,
-          fontSize: 10,
-          fontWeight: 600,
-          background: "#FEF3C7",
-          color: "#92400E",
-          border: "1px solid #FDE68A",
-          borderRadius: 20,
-          padding: "2px 8px",
-          fontFamily: "'Inter', sans-serif",
+          position: "absolute", top: 14, right: 14,
+          fontSize: 10, fontWeight: 700,
+          background: "#FEF3C7", color: "#92400E",
+          border: "1px solid #FDE68A", borderRadius: 9999,
+          padding: "2px 8px", fontFamily: "'Inter', sans-serif",
+          letterSpacing: "0.04em", textTransform: "uppercase",
         }}>
           Bientôt
         </span>
       )}
 
-      {/* Icône */}
       <div style={{
-        width: 46,
-        height: 46,
-        borderRadius: 12,
-        background: `${color}18`,
-        border: `1.5px solid ${color}45`,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: 24,
-        marginBottom: 14,
-        boxShadow: `0 2px 10px ${color}25`,
+        width: 48, height: 48, borderRadius: B.radius,
+        background: `${color}18`, border: `1.5px solid ${color}40`,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: 24, marginBottom: 16,
       }}>
         {icon}
       </div>
 
-      {/* Titre en bleu */}
       <div style={{
-        fontSize: 14,
-        fontWeight: 700,
-        color: B.primary,
-        marginBottom: 6,
-        fontFamily: "'Space Grotesk', sans-serif",
+        fontSize: 17, fontWeight: 700, color: B.foreground,
+        marginBottom: 8, fontFamily: "'Syne', sans-serif", lineHeight: 1.3,
       }}>
         {title}
       </div>
 
-      {/* Description */}
-      <div style={{ fontSize: 13, color: B.muted, lineHeight: "1.65", fontFamily: "'Inter', sans-serif" }}>
+      <div style={{ fontSize: 14, color: B.muted, lineHeight: "1.65", fontFamily: "'Inter', sans-serif" }}>
         {desc}
       </div>
     </div>
@@ -216,19 +190,13 @@ export function FeatureCard({ icon, color = B.primary, title, desc, soon = false
 // ── STEP (journée) ────────────────────────────────────────────────────────────
 export function Step({ icon, color, title, desc, isLast = false, delay = 0 }) {
   return (
-    <div style={{ display: "flex", gap: 16, animation: `fadeUp 0.5s ease ${delay}s both` }}>
-      {/* Icône + ligne verticale */}
+    <div style={{ display: "flex", gap: 16, animation: `fadeUp 0.5s ${ease} ${delay}s both` }}>
       <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <div style={{
-          width: 48,
-          height: 48,
-          borderRadius: "50%",
-          background: `${color}12`,
-          border: `2px solid ${color}30`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: 19,
+          width: 48, height: 48, borderRadius: "50%",
+          background: `${color}12`, border: `2px solid ${color}30`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: 20,
         }}>
           {icon}
         </div>
@@ -237,30 +205,23 @@ export function Step({ icon, color, title, desc, isLast = false, delay = 0 }) {
         )}
       </div>
 
-      {/* Carte */}
       <div style={{ flex: 1, paddingBottom: isLast ? 0 : 20 }}>
         <div style={{
-          background: B.card,
-          border: `1px solid ${B.border}`,
-          borderRadius: B.radius,
-          padding: "16px 20px",
+          background: B.card, border: `1px solid ${B.border}`,
+          borderRadius: B.radius, padding: "16px 20px",
           boxShadow: B.shadowCard,
         }}>
           <div style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: 15,
-            fontWeight: 700,
-            color: B.foreground,
-            marginBottom: 6,
+            fontFamily: "'Syne', sans-serif",
+            fontSize: 16, fontWeight: 700, color: B.foreground, marginBottom: 6,
           }}>
             {title}
           </div>
-          <p style={{ fontSize: 13, color: B.muted, margin: 0, lineHeight: "1.65", fontFamily: "'Inter', sans-serif" }}>
+          <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: "1.65", fontFamily: "'Inter', sans-serif" }}>
             {desc}
           </p>
         </div>
       </div>
     </div>
   );
-
 }

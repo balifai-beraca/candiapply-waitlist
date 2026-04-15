@@ -5,22 +5,34 @@
 
 // ── BRAND TOKENS ─────────────────────────────────────────────────────────────
 export const B = {
-  // Couleurs (source: Brand Guidelines HSL)
+  // Couleurs principales
   primary:     "#1192D0",   // Boutons, CTA, accents
-  foreground:  "#17304A",   // Texte principal
-  background:  "#F6F8FA",   // Fond principal
-  muted:       "#6B7280",   // Texte secondaire
-  accent:      "#E6F4FD",   // Badges, surbrillance
-  card:        "#FFFFFF",   // Fond des cartes
-  border:      "#E2E6EA",   // Bordures, séparateurs
-  destructive: "#EF4444",   // Erreurs
-  green:       "#10B981",   // Succès
-  orange:      "#F59E0B",   // Alertes
-
-  // Tokens d'espacement & ombres (source: Brand Guidelines)
-  radius:      "12px",
-  shadowCard:  "0 4px 24px -4px rgba(17,146,208,0.08)",   // --shadow-card
-  shadowElev:  "0 12px 40px -8px rgba(17,146,208,0.15)",  // --shadow-elevated
+  primaryHov:  "#0c6fa0",   // Hover bouton principal
+  // Hiérarchie texte
+  foreground:  "#001935",   // Titres (deep navy)
+  tx2:         "#2d3a52",   // Corps
+  muted:       "#64748b",   // Meta, secondaire
+  tx4:         "#93BBCC",   // Placeholder
+  // Surfaces
+  background:  "#f6f8fb",   // Fond clair (sections features)
+  bgDark:      "#07111f",   // Fond sombre (problem, CTA)
+  bgDarker:    "#060c19",   // Fond footer
+  accent:      "#e8f5fd",   // Badges bleus clairs
+  card:        "#ffffff",   // Cartes
+  border:      "rgba(0,0,0,0.07)",
+  // Autres
+  destructive: "#EF4444",
+  green:       "#10B981",
+  orange:      "#F59E0B",
+  // Radius
+  radius:      "12px",      // inputs, small
+  radiusMd:    "18px",      // boutons CTA, feature items
+  radiusLg:    "24px",      // cartes principales
+  // Ombres
+  shadowCard:  "0 4px 20px rgba(0,0,0,0.08)",
+  shadowElev:  "0 12px 48px rgba(17,146,208,0.14)",
+  shadowHov:   "0 16px 56px rgba(17,146,208,0.22)",
+  shadowNav:   "0 1px 4px rgba(0,0,0,0.06)",
 };
 
 // ── WAITLIST CONFIG ───────────────────────────────────────────────────────────
