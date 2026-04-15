@@ -7,26 +7,16 @@ import { B, AVATAR_EMOJIS } from "../constants";
 
 const ease = "cubic-bezier(0.22,1,0.36,1)";
 
-// ── LOGO SVG ─────────────────────────────────────────────────────────────────
+// ── LOGO ─────────────────────────────────────────────────────────────────────
 export function Logo({ size = 32, inverted = false }) {
-  const ringColor = inverted ? "rgba(255,255,255,0.5)" : B.tx2;
+  const height = size;
+  const src = inverted ? "/logo-dark.svg" : "/logo-light.svg";
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-      <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-        <circle cx="20" cy="20" r="19" stroke={ringColor} strokeWidth="2.5" fill="none" />
-        <path d="M30 20a10 10 0 1 1-10-10" stroke={B.primary} strokeWidth="3" strokeLinecap="round" fill="none" />
-        <circle cx="30" cy="20" r="3.5" fill={B.primary} />
-      </svg>
-      <span style={{
-        fontFamily: "'Syne', sans-serif",
-        fontSize: size * 0.56,
-        fontWeight: 700,
-        color: inverted ? "#fff" : B.foreground,
-        letterSpacing: "-0.03em",
-      }}>
-        Candi<span style={{ color: B.primary }}>Apply</span>
-      </span>
-    </div>
+    <img
+      src={src}
+      alt="CandiApply"
+      style={{ height: height, width: "auto", display: "block" }}
+    />
   );
 }
 
