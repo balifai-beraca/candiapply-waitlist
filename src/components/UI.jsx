@@ -10,7 +10,7 @@ const ease = "cubic-bezier(0.22,1,0.36,1)";
 // ── LOGO ─────────────────────────────────────────────────────────────────────
 export function Logo({ size = 32, inverted = false }) {
   const height = size;
-  const src = inverted ? "/logo-dark.svg" : "/logo-light.svg";
+  const src = inverted ? "/logo-dark.png" : "/logo-light.png";
   return (
     <img
       src={src}
