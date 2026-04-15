@@ -44,7 +44,6 @@ export async function getWaitlistCount() {
     .select("*", { count: "exact", head: true });
 
   if (error) {
-    console.error("getWaitlistCount:", error.message);
     return 0;
   }
   return count ?? 0;

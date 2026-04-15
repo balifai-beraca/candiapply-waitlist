@@ -60,7 +60,7 @@ export function WaitlistForm({ onSuccess }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!firstName.trim()) { setError("Ton prénom est requis 👋"); return; }
-    if (!email.includes("@")) { setError("Adresse email invalide."); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { setError("Adresse email invalide."); return; }
     setError("");
     setLoading(true);
     try {
