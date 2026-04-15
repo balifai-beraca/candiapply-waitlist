@@ -464,12 +464,12 @@ const FAQS = [
     answer: "Oui, l'accès anticipé est 100 % gratuit. Inscris-toi à la liste d'attente et tu seras parmi les premiers à tester la plateforme sans frais.",
   },
   {
-    question: "Comment l'IA sélectionne-t-elle les offres ?",
-    answer: "Notre IA analyse ton profil (compétences, expérience, localisation, prétentions salariales) et le compare à des milliers d'offres chaque jour pour ne retenir que les plus pertinentes.",
+    question: "Comment CandiApply sélectionne-t-il les offres ?",
+    answer: "CandiApply analyse ton profil (compétences, expérience, localisation, prétentions salariales) et le compare à des milliers d'offres chaque jour pour ne retenir que les plus pertinentes.",
   },
   {
     question: "Est-ce que mon CV est modifié automatiquement ?",
-    answer: "L'IA génère une version optimisée de ton CV adaptée à chaque offre. Tu gardes toujours le contrôle et peux valider ou modifier avant envoi.",
+    answer: "CandiApply génère une version optimisée de ton CV adaptée à chaque offre. Tu gardes toujours le contrôle et peux valider ou modifier avant envoi.",
   },
   {
     question: "Quand la plateforme sera-t-elle disponible ?",

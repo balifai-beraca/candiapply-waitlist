@@ -81,13 +81,13 @@ export const FEATURES = [
     icon:  "⚡",
     color: "#1192D0",
     title: "Veille intelligente",
-    desc:  "Ton agent trouve et score les meilleures offres chaque jour selon ton profil. Tu ne vois que ce qui te correspond.",
+    desc:  "CandiApply trouve et score les meilleures offres chaque jour selon ton profil. Tu ne vois que ce qui te correspond.",
   },
   {
     icon:  "✦",
     color: "#7C3AED",
     title: "CV & Lettre de motivation sur-mesure",
-    desc: `Une offre te convient ? L'IA adapte ton CV et rédige une lettre de motivation personnalisée en quelques secondes. Tu as trouvé ailleurs ? Colle l'offre et ton agent fera le même job !`,
+    desc: `Une offre te convient ? CandiApply adapte ton CV et rédige une lettre de motivation personnalisée en quelques secondes. Tu as trouvé ailleurs ? Colle l'offre et CandiApply fera le même job !`,
   },
   {
     icon:  "◈",
@@ -122,7 +122,7 @@ export const STEPS = [
   {
     icon:  "⚡",
     color: "#1192D0",
-    title: "Ton agent scanne le marché",
+    title: "CandiApply scanne le marché",
     desc:  "Il cherche les offres publiées depuis 72h qui correspondent à ton profil et les score automatiquement.",
   },
   {
@@ -135,7 +135,7 @@ export const STEPS = [
     icon:  "✦",
     color: "#7C3AED",
     title: "Tu personnalises tes candidatures et tu les envoies",
-    desc:  "Tu as lu l'offre, elle te correspond → l'IA adapte ton CV et rédige une lettre de motivation. Tu relis, tu modifies au besoin et tu envoies.",
+    desc:  "Tu as lu l'offre, elle te correspond → CandiApply adapte ton CV et rédige une lettre de motivation. Tu relis, tu modifies au besoin et tu envoies.",
   },
   {
     icon:  "◎",
@@ -153,7 +153,7 @@ export const DEMO_MODULES = [
     icon:     "⚡",
     color:    "#1192D0",
     label:    "Veille intelligente",
-    title:    "L'agent scanne le marché pour toi",
+    title:    "CandiApply scanne le marché pour toi",
     subtitle: "Chaque matin, les meilleures offres scorées selon ton profil",
     bullets:  [
       "Score de compatibilité expliqué",
@@ -168,7 +168,7 @@ export const DEMO_MODULES = [
     color:    "#7C3AED",
     label:    "CV & LM sur-mesure",
     title:    "Un CV et une LM en 30 secondes",
-    subtitle: "Colle l'offre, l'IA fait le reste",
+    subtitle: "Colle l'offre, CandiApply fait le reste",
     bullets:  [
       "CV adapté en 30 secondes",
       "Lettre de motivation personnalisée",
