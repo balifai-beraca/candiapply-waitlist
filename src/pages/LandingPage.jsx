@@ -136,7 +136,7 @@ function Hero({ count, onSignup, onDemo }) {
           letterSpacing: "-0.05em", color: B.foreground,
           margin: "0 0 22px", animation: `fadeUp 0.7s ${ease} 0.1s both`,
         }}>
-          Trouvez votre prochain emploi<br />
+          Trouve ton prochain emploi<br />
           <span style={{ color: B.primary }}>sans passer des heures à chercher</span>
         </h1>
 
@@ -146,7 +146,7 @@ function Hero({ count, onSignup, onDemo }) {
           lineHeight: 1.72, maxWidth: 500, margin: "0 auto 30px",
           animation: `fadeUp 0.7s ${ease} 0.15s both`,
         }}>
-          CandiApply analyse votre profil, détecte les offres qui vous correspondent, personnalise vos candidatures et vous prépare aux entretiens —{" "}
+          CandiApply analyse ton profil, détecte les offres qui te correspondent, personnalise tes candidatures et te prépare aux entretiens —{" "}
           <strong style={{ color: B.tx2 }}>tout en un, chaque matin.</strong>
         </p>
 
@@ -354,7 +354,7 @@ function FeaturesSection() {
             fontSize: "clamp(28px,4vw,44px)", letterSpacing: "-0.04em", lineHeight: 1.1,
             color: B.foreground,
           }}>
-            Tout ce dont vous avez besoin.<br />
+            Tout ce dont tu as besoin.<br />
             <span style={{ color: B.muted }}>Rien de superflu.</span>
           </h2>
         </div>
@@ -461,19 +461,19 @@ function WaitlistSection({ count, onSuccess, formRef }) {
 const FAQS = [
   {
     question: "CandiApply est-il vraiment gratuit ?",
-    answer: "Oui, l'accès anticipé est 100 % gratuit. Inscrivez-vous à la liste d'attente et vous serez parmi les premiers à tester la plateforme sans frais.",
+    answer: "Oui, l'accès anticipé est 100 % gratuit. Inscris-toi à la liste d'attente et tu seras parmi les premiers à tester la plateforme sans frais.",
   },
   {
     question: "Comment l'IA sélectionne-t-elle les offres ?",
-    answer: "Notre IA analyse votre profil (compétences, expérience, localisation, prétentions salariales) et le compare à des milliers d'offres chaque jour pour ne retenir que les plus pertinentes.",
+    answer: "Notre IA analyse ton profil (compétences, expérience, localisation, prétentions salariales) et le compare à des milliers d'offres chaque jour pour ne retenir que les plus pertinentes.",
   },
   {
     question: "Est-ce que mon CV est modifié automatiquement ?",
-    answer: "L'IA génère une version optimisée de votre CV adaptée à chaque offre. Vous gardez toujours le contrôle et pouvez valider ou modifier avant envoi.",
+    answer: "L'IA génère une version optimisée de ton CV adaptée à chaque offre. Tu gardes toujours le contrôle et peux valider ou modifier avant envoi.",
   },
   {
     question: "Quand la plateforme sera-t-elle disponible ?",
-    answer: "Le lancement est prévu courant 2026. En rejoignant la liste d'attente, vous serez notifié dès l'ouverture de la bêta et bénéficierez d'un accès prioritaire.",
+    answer: "Le lancement est prévu courant 2026. En rejoignant la liste d'attente, tu seras notifié dès l'ouverture de la bêta et bénéficieras d'un accès prioritaire.",
   },
 ];
 
