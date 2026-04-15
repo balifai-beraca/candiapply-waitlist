@@ -52,7 +52,7 @@ export const MARQUEE_ITEMS = [
   "Tracker Kanban",
   "Rappels relance J+7",
   "Coaching entretien",
-  "Mission Control",
+  "Jobboard",
   "1h / jour",
 ];
 
@@ -105,7 +105,7 @@ export const FEATURES = [
   {
     icon:  "◉",
     color: "#EC4899",
-    title: "Mission Control",
+    title: "Jobboard",
     desc:  "Dashboard central : offres matchées ≥ 70%, pipeline, routine quotidienne et objectifs hebdo réunis.",
   },
   {
