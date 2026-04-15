@@ -53,7 +53,7 @@ function Navbar({ count, onSignup, onDemo, scrolled }) {
       boxShadow: scrolled ? B.shadowNav : "none",
       transition: `all 0.25s ${ease}`,
     }}>
-      <Logo size={30} />
+      <Logo size={40} />
 
       <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 8 : 12 }}>
         {/* Compteur live */}
@@ -533,7 +533,7 @@ function Footer() {
       gap: 16,
       textAlign: isMobile ? "center" : "left",
     }}>
-      <Logo size={28} inverted />
+      <Logo size={38} inverted />
       <div style={{ display: "flex", gap: isMobile ? 20 : 24 }}>
         {["CGU", "Confidentialité", "Contact"].map((label) => (
           <span key={label} style={{ fontSize: 12, color: "rgba(255,255,255,0.28)", cursor: "pointer", fontFamily: "'Inter', sans-serif", transition: `color 0.2s ${ease}` }}
