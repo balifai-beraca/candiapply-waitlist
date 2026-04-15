@@ -131,7 +131,7 @@ function Hero({ count, onSignup, onDemo }) {
         {/* H1 — Syne 800 */}
         <h1 style={{
           fontFamily: "'Syne', sans-serif",
-          fontSize: isMobile ? "clamp(32px,8vw,42px)" : "clamp(42px,5.5vw,58px)",
+          fontSize: isMobile ? "clamp(26px,7vw,36px)" : "clamp(36px,4.5vw,48px)",
           fontWeight: 800, lineHeight: 1.05,
           letterSpacing: "-0.05em", color: B.foreground,
           margin: "0 0 22px", animation: `fadeUp 0.7s ${ease} 0.1s both`,
@@ -320,7 +320,7 @@ function ProblemSection() {
         <div style={{ marginBottom: 14 }}><SLabel dark>Le problème</SLabel></div>
         <h2 style={{
           fontFamily: "'Syne', sans-serif", fontWeight: 800,
-          fontSize: "clamp(28px,4vw,44px)", letterSpacing: "-0.04em", lineHeight: 1.1,
+          fontSize: "clamp(24px,3.2vw,36px)", letterSpacing: "-0.04em", lineHeight: 1.1,
           color: "#ffffff", marginBottom: 16,
         }}>
           La recherche d'emploi est<br />un travail à plein temps
@@ -351,7 +351,7 @@ function FeaturesSection() {
           <div style={{ marginBottom: 14 }}><SLabel>6 modules · 1 pipeline</SLabel></div>
           <h2 style={{
             fontFamily: "'Syne', sans-serif", fontWeight: 800,
-            fontSize: "clamp(28px,4vw,44px)", letterSpacing: "-0.04em", lineHeight: 1.1,
+            fontSize: "clamp(24px,3.2vw,36px)", letterSpacing: "-0.04em", lineHeight: 1.1,
             color: B.foreground,
           }}>
             Tout ce dont tu as besoin.<br />
@@ -377,7 +377,7 @@ function JourneeSection() {
           <div style={{ marginBottom: 14 }}><SLabel>Ta journée avec CandiApply</SLabel></div>
           <h2 style={{
             fontFamily: "'Syne', sans-serif", fontWeight: 800,
-            fontSize: "clamp(28px,4vw,44px)", letterSpacing: "-0.04em", lineHeight: 1.1,
+            fontSize: "clamp(24px,3.2vw,36px)", letterSpacing: "-0.04em", lineHeight: 1.1,
             color: B.foreground,
           }}>
             1h par jour.<br />Pas plus.
@@ -413,7 +413,7 @@ function WaitlistSection({ count, onSuccess, formRef }) {
           </div>
           <h2 style={{
             fontFamily: "'Syne', sans-serif", fontWeight: 800,
-            fontSize: "clamp(26px,4.5vw,40px)", letterSpacing: "-0.04em", lineHeight: 1.1,
+            fontSize: "clamp(22px,3.5vw,34px)", letterSpacing: "-0.04em", lineHeight: 1.1,
             color: "#ffffff", marginBottom: 12,
           }}>
             Ton prochain entretien<br />
@@ -486,7 +486,7 @@ function FAQSection() {
           <div style={{ marginBottom: 14 }}><SLabel>FAQ</SLabel></div>
           <h2 style={{
             fontFamily: "'Syne', sans-serif", fontWeight: 800,
-            fontSize: "clamp(28px,4vw,44px)", letterSpacing: "-0.04em", lineHeight: 1.1,
+            fontSize: "clamp(24px,3.2vw,36px)", letterSpacing: "-0.04em", lineHeight: 1.1,
             color: B.foreground,
           }}>
             Questions fréquentes
