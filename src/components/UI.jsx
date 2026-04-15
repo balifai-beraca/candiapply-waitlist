@@ -9,13 +9,16 @@ const ease = "cubic-bezier(0.22,1,0.36,1)";
 
 // ── LOGO ─────────────────────────────────────────────────────────────────────
 export function Logo({ size = 32, inverted = false }) {
-  const height = size;
-  const src = inverted ? "/logo-dark.png" : "/logo-light.png";
   return (
     <img
-      src={src}
+      src="/logo-light.png"
       alt="CandiApply"
-      style={{ height: height, width: "auto", display: "block" }}
+      style={{
+        height: size,
+        width: "auto",
+        display: "block",
+        filter: inverted ? "brightness(0) invert(1)" : "none",
+      }}
     />
   );
 }
